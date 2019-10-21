@@ -50,6 +50,12 @@ module.exports = (app) => {
     livroDao.adiciona(req.body).then(res.redirect('/livros')).catch((err) => console.log(err));
   });
 
+  app.put('/livros', (req, res) => {
+    const livroDao = new LivroDao(db);
+
+    livroDao.atualizar(req.body).then(res.redirect('/livros')).catch((err) => console.log(err));
+  });
+
   app.delete('/livros/:id', (req, res) => {
     const id = req.params.id;
 

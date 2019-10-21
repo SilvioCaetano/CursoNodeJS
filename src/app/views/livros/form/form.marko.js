@@ -21,9 +21,15 @@ function render(input, out, __component, component, state) {
 
   component_globals_tag({}, out);
 
-  out.w("<h1>Cadastro de livros</h1><form action=\"/livros\" method=\"post\"><input type=\"hidden\" id=\"id\" name=\"id\"" +
-    marko_attr("value", "" + data.livro.id) +
-    "><div><label for=\"titulo\">Titulo:</label><input type=\"text\" id=\"titulo\" name=\"titulo\"" +
+  out.w("<h1>Cadastro de livros</h1><form action=\"/livros\" method=\"post\">");
+
+  if (data.livro.id) {
+    out.w("<div><input type=\"hidden\" name=\"_method\" value=\"PUT\"><input type=\"hidden\" id=\"id\" name=\"id\"" +
+      marko_attr("value", "" + data.livro.id) +
+      "> </div>");
+  }
+
+  out.w("<div><label for=\"titulo\">Titulo:</label><input type=\"text\" id=\"titulo\" name=\"titulo\"" +
     marko_attr("value", "" + data.livro.titulo) +
     " placeholder=\"coloque o titulo\"></div><div><label for=\"preco\">Preço:</label><input type=\"text\" id=\"preco\" name=\"preco\"" +
     marko_attr("value", "" + data.livro.preco) +
@@ -33,7 +39,7 @@ function render(input, out, __component, component, state) {
 
   init_components_tag({}, out);
 
-  await_reorderer_tag({}, out, __component, "15");
+  await_reorderer_tag({}, out, __component, "17");
 
   out.w("</body></html>");
 }

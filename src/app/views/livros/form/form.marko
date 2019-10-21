@@ -4,15 +4,20 @@
 
         <form action="/livros" method="post">
 
-            <input type="hidden" id="id" name="id" value="${data.livro.id}" />
-
+            <if (data.livro.id)>
+                <div>
+                    <input type="hidden" name="_method" value="PUT" />
+                    <input type="hidden" id="id" name="id" value=`${data.livro.id}` /> 
+                </div>
+            </if>
+            
             <div>
                 <label for="titulo">Titulo:</label>
-                <input type="text" id="titulo" name="titulo" value="${data.livro.titulo}" placeholder="coloque o titulo" />
+                <input type="text" id="titulo" name="titulo" value=`${data.livro.titulo}` placeholder="coloque o titulo" />
             </div>
             <div>
                 <label for="preco">Preço:</label>
-                <input type="text" id="preco" name="preco" value="${data.livro.preco}" placeholder="150.25" />
+                <input type="text" id="preco" name="preco" value=`${data.livro.preco}` placeholder="150.25" />
             </div>
             <div>
                 <label for="descricao">Descrição:</label>

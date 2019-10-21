@@ -41,7 +41,7 @@ function render(input, out, __component, component, state) {
       marko_attr("href", "/livros/form/" + livro.id) +
       ">Editar</a></td> <td><a href=\"#\"" +
       marko_attr("data-ref", "" + livro.id) +
-      " data-type=\"remocao\">Remover</a></td> </tr>");
+      " data-type=\"remocao\">Remover</a></td> </tr> ");
   });
 
   out.w("</table> <script src=\"/estatico/js/remove-livro.js\">\r\n        </script> ");
