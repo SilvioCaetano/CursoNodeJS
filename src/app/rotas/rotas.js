@@ -1,17 +1,18 @@
+// Return the LivroDao class with all data access methods from Livros.
 const LivroDao = require('../../app/infra/livro-dao');
+// Configure the SqlLite 3 Database.
 const db = require('../../config/database');
 
+// Gets the objects that will handle form validations.
+const { check, validationResult } = require('express-validator/check');
+
+// Exports the function that will define the routes.
 module.exports = (app) => {
 
-  app.get('/', (req, res) => {
-    res.send(`<html>
-              <head>
-                <meta charset="utf-8">
-              </head>
-              <body>
-                <h1>Casa do Código.</h1>
-              </body>
-            </html>`);
+  app.get('/', function (req, resp) {
+    resp.marko(
+      require('../views/base/home/home.marko')
+    );
   });
 
   app.get('/livros', (req, res) => {
@@ -44,10 +45,28 @@ module.exports = (app) => {
 
   });
 
-  app.post('/livros', (req, res) => {
+  app.post('/livros', [
+    check('titulo').isLength({ min: 5 }).withMessage('O título precisa ter no mínimo 5 caracteres.'),
+    check('preco').isCurrency().withMessage('O preço deve ter o valor monetário.')
+  ], function (req, resp) {
+    console.log(req.body);
     const livroDao = new LivroDao(db);
 
-    livroDao.adiciona(req.body).then(res.redirect('/livros')).catch((err) => console.log(err));
+    const erros = validationResult(req);
+
+    if (!erros.isEmpty()) {
+      return resp.marko(
+        require('../views/livros/form/form.marko'),
+        {
+          livro: req.body,
+          errosValidacao: erros.array()
+        }
+      );
+    }
+
+    livroDao.adiciona(req.body)
+      .then(resp.redirect('/livros'))
+      .catch(erro => console.log(erro));
   });
 
   app.put('/livros', (req, res) => {
