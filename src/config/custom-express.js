@@ -31,14 +31,16 @@ app.use(methodOverride((req, res) => {
 // Calling the void function in rotas.js to configure the routes.
 require('../app/rotas/rotas')(app);
 
+const template = require('../app/views/templates')
+
 // Including the middleware that wil handle 404 errors. 
 app.use((req, res, next) => {
-  return res.status(404).marko(require('../app/views/base/erros/404.marko'));
+  return res.status(404).marko(template.base.erro404);
 });
 
 // Including the middleware that wil handle 500 errors.
 app.use((erro, req, res, next) => {
-  return res.status(500).marko(require('../app/views/base/erros/500.marko'));
+  return res.status(500).marko(template.base.erro500);
 });
 
 // Send back to the caller sthe Express app with all configurations.
