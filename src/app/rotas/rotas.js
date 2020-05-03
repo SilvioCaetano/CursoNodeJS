@@ -69,8 +69,24 @@ module.exports = (app) => {
       .catch(erro => console.log(erro));
   });
 
-  app.put('/livros', (req, res) => {
+  app.put('/livros', [
+    check('titulo').isLength({ min: 5 }).withMessage('O título precisa ter no mínimo 5 caracteres.'),
+    check('preco').isCurrency().withMessage('O preço deve ter o valor monetário.')
+  ], (req, res) => {
+    console.log(req.body);
     const livroDao = new LivroDao(db);
+
+    const erros = validationResult(req);
+
+    if(!erros.isEmpty()){
+      return res.marko(
+        require('../views/livros/form/form.marko'),
+        {
+          livro: req.body,
+          errosValidacao: erros.array()
+        }
+      );
+    }
 
     livroDao.atualizar(req.body).then(res.redirect('/livros')).catch((err) => console.log(err));
   });
